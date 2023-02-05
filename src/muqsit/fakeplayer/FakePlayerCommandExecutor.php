@@ -34,7 +34,7 @@ final class FakePlayerCommandExecutor implements CommandExecutor{
 		$context = new PacketSerializerContext(GlobalItemTypeDictionary::getInstance()->getDictionary());
 		$serializer = PacketSerializer::encoder($context);
 		$packet->encode($serializer);
-		$sender->getNetworkSession()->handleDataPacket($packet, $serializer->getBuffer());
+		$sender->getNetworkSession()->handleDataPacket($packet, $sender->getNetworkSession()->getProtocolId(), $serializer->getBuffer());
 	}
 
 	public function onCommand(CommandSender $sender, Command $command, string $label, array $args) : bool{

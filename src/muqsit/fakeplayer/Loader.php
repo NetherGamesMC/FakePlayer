@@ -143,7 +143,7 @@ final class Loader extends PluginBase implements Listener{
 			$network->getSessionManager(),
 			PacketPool::getInstance(),
 			new FakePacketSender(),
-			new StandardPacketBroadcaster($server),
+			new StandardPacketBroadcaster($server, ProtocolInfo::CURRENT_PROTOCOL),
 			ZlibCompressor::getInstance(),
 			$server->getIp(),
 			$server->getPort(),
@@ -162,7 +162,7 @@ final class Loader extends PluginBase implements Listener{
 		$packet = ResourcePackClientResponsePacket::create(ResourcePackClientResponsePacket::STATUS_COMPLETED, []);
 		$serializer = PacketSerializer::encoder(new PacketSerializerContext(GlobalItemTypeDictionary::getInstance()->getDictionary()));
 		$packet->encode($serializer);
-		$session->handleDataPacket($packet, $serializer->getBuffer());
+		$session->handleDataPacket($packet, $session->getProtocolId(), $serializer->getBuffer());
 
 		$internal_resolver->getPromise()->onCompletion(function(Player $player) use($info, $session) : void{
 			$player->setViewDistance(4);
